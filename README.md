@@ -159,26 +159,7 @@ Dengan demikian, alpha = 2 merupakan konfigurasi terbaik pada dataset pengujian 
 
 ### 5.4 Dokumentasi Hasil Benchmark
 
-Tambahkan gambar hasil benchmark pada folder `images/`.
-
-```text
-images/
-├── benchmark_alpha_1.png
-├── benchmark_alpha_1_5.png
-├── benchmark_alpha_2.png
-└── benchmark_alpha_2_5.png
-```
-
-Setelah gambar ditambahkan, aktifkan referensi Markdown berikut dengan menghapus tanda komentar:
-
-```markdown
-<!--
-![Benchmark Alpha 1](images/benchmark_alpha_1.png)
-![Benchmark Alpha 1.5](images/benchmark_alpha_1_5.png)
-![Benchmark Alpha 2](images/benchmark_alpha_2.png)
-![Benchmark Alpha 2.5](images/benchmark_alpha_2_5.png)
--->
-```
+![benchmark](asset/benchmark-dengan-algo-lain.png)
 
 ## 6. Kesimpulan
 
