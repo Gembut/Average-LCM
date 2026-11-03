@@ -32,16 +32,7 @@ Tujuan modifikasi ini adalah meningkatkan kualitas solusi awal Transportation Pr
 
 Skor setiap sel dihitung menggunakan:
 
-\[
-Score_{ij}=C_{ij}-\alpha\left(\frac{\bar C_i+\bar C_j}{2}\right)
-\]
-
-Keterangan:
-
-- \(C_{ij}\): biaya transportasi dari sumber \(i\) ke tujuan \(j\).
-- \(\bar C_i\): rata-rata biaya pada baris \(i\) yang masih aktif.
-- \(\bar C_j\): rata-rata biaya pada kolom \(j\) yang masih aktif.
-- \(\alpha\): parameter yang mengatur pengaruh rata-rata biaya.
+![Formula](asset/rumus.png)
 
 Pada implementasi ini, nilai **α = 2** digunakan sebagai konfigurasi utama berdasarkan hasil benchmark.
 
