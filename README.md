@@ -67,28 +67,12 @@ AVG-LCM bekerja secara iteratif dengan langkah berikut:
 
 ### 3.1 Flowchart
 
-```mermaid
-flowchart TD
-    A([Mulai]) --> B[/Input cost, supply, demand/]
-    B --> C{Total supply = total demand?}
-    C -->|Tidak| D[Input tidak balanced]
-    D --> Z([Selesai])
-    C -->|Ya| E[Identifikasi baris dan kolom aktif]
-    E --> F{Masih ada supply dan demand?}
-    F -->|Tidak| K[Hitung total biaya]
-    K --> Z
-    F -->|Ya| G[Hitung rata-rata baris dan kolom]
-    G --> H[Hitung skor setiap sel aktif]
-    H --> I[Pilih skor terkecil dan terapkan tie-breaker]
-    I --> J[Alokasi minimum supply dan demand]
-    J --> L[Perbarui supply dan demand]
-    L --> M[Nonaktifkan baris atau kolom yang terpenuhi]
-    M --> F
-```
+
+![flowchart](asset/flowchart_avg-lcm.png)
 
 ## 4. Contoh Perbandingan LCM vs AVG-LCM
 
-Berikut contoh Transportation Problem ketika LCM menghasilkan biaya lebih tinggi dibandingkan AVG-LCM.
+Untuk menunjukkan perbedaan hasil antara LCM dan AVG-LCM, dilakukan pengujian menggunakan Transportation Problem berukuran 3 × 3 dengan nilai α = 2.
 
 ### 4.1 Data Transportation Problem
 
@@ -99,88 +83,30 @@ Berikut contoh Transportation Problem ketika LCM menghasilkan biaya lebih tinggi
 | S3 | 17 | 19 | 21 | 7 |
 | **Demand** | **12** | **10** | **14** | |
 
-Total supply = 36 dan total demand = 36, sehingga masalah ini balanced.
+Total supply = 36 dan total demand = 36, sehingga permasalahan termasuk *balanced Transportation Problem*.
 
-### 4.2 Penyelesaian Menggunakan LCM
+### 4.2 Hasil Perhitungan LCM dan AVG-LCM
 
-LCM memilih sel berdasarkan biaya terkecil yang masih tersedia.
+Berikut hasil implementasi kedua algoritma yang menampilkan urutan pemilihan sel, alokasi, serta akumulasi biaya transportasi pada setiap iterasi.
 
-| Iterasi | Sel | Biaya/unit | Alokasi | Biaya |
-|---|---|---:|---:|---:|
-| 1 | S1 → D2 | 7 | 10 | 70 |
-| 2 | S2 → D1 | 8 | 12 | 96 |
-| 3 | S2 → D3 | 14 | 5 | 70 |
-| 4 | S3 → D3 | 21 | 7 | 147 |
-| 5 | S1 → D3 | 25 | 2 | 50 |
-| | | | **Total** | **433** |
+![Hasil Perbandingan LCM dan AVG-LCM](asset/perbandingan_lcm_avg_lcm.jpg)
 
-Total biaya LCM:
+LCM memilih sel berdasarkan biaya transportasi terkecil, sedangkan AVG-LCM memilih sel berdasarkan skor yang dihitung menggunakan biaya asli serta rata-rata biaya baris dan kolom aktif.
 
-\[
-Z_{LCM}=433
-\]
+Pada iterasi pertama, kedua metode memilih sel S1–D2 dengan alokasi 10 unit. Perbedaan mulai terjadi pada iterasi kedua, ketika LCM memilih S2–D1, sedangkan AVG-LCM memilih S1–D1 berdasarkan skor terkecil.
 
-### 4.3 Penyelesaian Menggunakan AVG-LCM (α = 2)
+### 4.3 Perbandingan Total Biaya
 
-Pada AVG-LCM, pemilihan sel mempertimbangkan skor yang diperoleh dari biaya asli serta rata-rata baris dan kolom aktif.
+| Metode | Total Cost | Iterasi |
+|---|---:|---:|
+| LCM | 433 | 5 |
+| **AVG-LCM (α = 2)** | **425** | **5** |
 
-Sebagai contoh, pada iterasi pertama:
 
-Rata-rata baris S1:
+Berdasarkan hasil pengujian, AVG-LCM menghasilkan total biaya sebesar **425**, lebih rendah dibandingkan LCM sebesar **433**, dengan pengurangan biaya sebesar **8 satuan biaya atau 1,85%**.
 
-\[
-\bar C_{S1}=(15+7+25)/3=15,67
-\]
+Meskipun kedua algoritma membutuhkan lima iterasi, perbedaan urutan pemilihan sel menghasilkan total biaya yang berbeda. Hal ini menunjukkan bahwa penggunaan rata-rata biaya baris dan kolom dalam AVG-LCM dapat membantu menghasilkan solusi yang lebih baik dibandingkan LCM konvensional pada contoh permasalahan tersebut.
 
-Rata-rata kolom D2:
-
-\[
-\bar C_{D2}=(7+12+19)/3=12,67
-\]
-
-Skor S1 → D2:
-
-\[
-Score_{S1,D2}=7-2((15,67+12,67)/2)
-\]
-
-\[
-Score_{S1,D2}\approx-21,33
-\]
-
-Setelah seluruh skor dibandingkan, sel S1 → D2 dipilih dan dialokasikan sebanyak 10 unit.
-
-Proses yang sama dilakukan pada iterasi berikutnya.
-
-| Iterasi | Sel | Biaya/unit | Alokasi | Biaya |
-|---|---|---:|---:|---:|
-| 1 | S1 → D2 | 7 | 10 | 70 |
-| 2 | S1 → D1 | 15 | 2 | 30 |
-| 3 | S2 → D1 | 8 | 10 | 80 |
-| 4 | S2 → D3 | 14 | 7 | 98 |
-| 5 | S3 → D3 | 21 | 7 | 147 |
-| | | | **Total** | **425** |
-
-Total biaya AVG-LCM:
-
-\[
-Z_{AVG-LCM}=425
-\]
-
-### 4.4 Perbandingan Hasil
-
-| Metode | Total Biaya | Selisih terhadap optimal | Status |
-|---|---:|---:|---|
-| LCM | 433 | 1,88% | Tidak optimal |
-| AVG-LCM (α = 2) | 425 | 0% | Optimal |
-
-Pada contoh ini, biaya optimal adalah 425.
-
-AVG-LCM menghasilkan biaya lebih rendah sebesar 8 satuan biaya dibandingkan LCM, atau penghematan sekitar **1,85% terhadap biaya LCM**.
-
-Hal ini menunjukkan bahwa pemilihan biaya terkecil secara langsung tidak selalu menghasilkan solusi terbaik. Dengan mempertimbangkan rata-rata baris dan kolom, AVG-LCM dapat memilih urutan alokasi yang lebih menguntungkan.
-
-Namun, AVG-LCM tetap merupakan metode heuristik dan tidak menjamin solusi optimal pada seluruh kasus.
 
 ## 5. Benchmark dengan Algoritma Lain
 
