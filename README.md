@@ -3,7 +3,9 @@
 **Modifikasi Least Cost Method untuk Penyelesaian Transportation Problem**
 
 Kelompok 10 — Operations Research
+
 Muhammad Daffa Nurrahman (5025231208)
+
 Muhammad Rafi Budiman (5025231297)
 
 ## 1. Deskripsi Proyek
